@@ -374,9 +374,9 @@ export class MoleculeRenderer {
 
     // --- Build bond meshes ---
     for (const bond of bonds) {
-      // Bond indices are 1-based in SDF; centeredPositions is 0-based
-      const fromIdx = bond.from - 1;
-      const toIdx = bond.to - 1;
+      // sdf-parser.js already converts to 0-based; use indices directly
+      const fromIdx = bond.from;
+      const toIdx = bond.to;
 
       if (
         fromIdx < 0 || fromIdx >= centeredPositions.length ||
@@ -408,10 +408,11 @@ export class MoleculeRenderer {
     const sphere = new THREE.Sphere();
     box.getBoundingSphere(sphere);
     const dist = Math.max(sphere.radius * 2.5, 5);
+    // Angle camera ~30° off the Z axis so flat aromatic molecules show depth on load
     this._camera.position.set(
-      sphere.center.x,
-      sphere.center.y,
-      sphere.center.z + dist,
+      sphere.center.x + dist * 0.5,
+      sphere.center.y + dist * 0.3,
+      sphere.center.z + dist * 0.9,
     );
     this._controls.target.copy(sphere.center);
     this._controls.update();
