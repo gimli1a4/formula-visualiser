@@ -1,0 +1,14 @@
+{
+  "name": "formula-visualiser",
+  "version": "1.0.0",
+  "description": "Interactive 3D chemical formula visualiser powered by Three.js and PubChem",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formula Visualiser</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.168.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.168.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">⬡</span>
+      <span class="brand-name">Formula Visualiser</span>
+    </div>
+    <div class="search-wrap">
+      <input
+        type="text"
+        id="formula-input"
+        class="formula-input"
+        placeholder="H2O, caffeine, aspirin..."
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <button id="load-btn" class="btn-primary">Visualise</button>
+    </div>
+    <div class="topbar-right">
+      <button id="theme-toggle" class="btn-icon" aria-label="Toggle theme" title="Toggle dark/light mode">
+        <span class="theme-icon-dark">◐</span>
+        <span class="theme-icon-light">○</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <span>Molecules</span>
+        <button id="sidebar-toggle" class="btn-icon" aria-label="Collapse sidebar">‹</button>
+      </div>
+      <nav id="molecule-list" class="molecule-list"></nav>
+    </aside>
+
+    <main class="canvas-area">
+      <div id="formula-display" class="formula-display"></div>
+      <canvas id="canvas"></canvas>
+      <div id="loading" class="status-overlay hidden">
+        <div class="loading-spinner"></div>
+        <span>Fetching from PubChem…</span>
+      </div>
+      <div id="error" class="status-overlay error-overlay hidden"></div>
+    </main>
+  </div>
+
+  <div id="inspector" class="inspector hidden">
+    <div class="inspector-header">
+      <span class="inspector-title">Atom Inspector</span>
+      <button id="inspector-close" class="btn-icon" aria-label="Close inspector">×</button>
+    </div>
+    <div id="inspector-content" class="inspector-content"></div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

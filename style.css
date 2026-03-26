@@ -1,0 +1,725 @@
+/* ==========================================================================
+   Formula Visualiser — Stylesheet
+   Scientific instrument aesthetic: monospace data, clean borders, no shadows.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Custom properties — light theme (default)
+   -------------------------------------------------------------------------- */
+
+:root {
+  --bg:           #f4f5f7;
+  --surface:      #ffffff;
+  --surface-2:    #f0f2f5;
+  --border:       #d0d4dc;
+  --text:         #1c1e26;
+  --text-muted:   #6b7280;
+  --accent:       #1d4ed8;
+  --accent-hover: #1e40af;
+  --canvas-bg:    #eef0f4;
+  --status-bg:    rgba(244, 245, 247, 0.92);
+
+  --topbar-height: 52px;
+  --sidebar-width: 220px;
+
+  --font-ui:   system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+/* --------------------------------------------------------------------------
+   Dark theme overrides
+   -------------------------------------------------------------------------- */
+
+[data-theme="dark"] {
+  --bg:           #0d0f14;
+  --surface:      #161921;
+  --surface-2:    #1e2230;
+  --border:       #252a36;
+  --text:         #e2e5ec;
+  --text-muted:   #8892a4;
+  --accent:       #60a5fa;
+  --accent-hover: #93c5fd;
+  --canvas-bg:    #080a0f;
+  --status-bg:    rgba(13, 15, 20, 0.92);
+}
+
+/* --------------------------------------------------------------------------
+   Reset / base
+   -------------------------------------------------------------------------- */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   Utility
+   -------------------------------------------------------------------------- */
+
+.hidden {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Topbar
+   -------------------------------------------------------------------------- */
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--topbar-height);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  z-index: 200;
+}
+
+/* --------------------------------------------------------------------------
+   Brand
+   -------------------------------------------------------------------------- */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.brand-icon {
+  font-size: 20px;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.brand-name {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Search
+   -------------------------------------------------------------------------- */
+
+.search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.formula-input {
+  flex: 1;
+  height: 32px;
+  padding: 0 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.formula-input::placeholder {
+  color: var(--text-muted);
+}
+
+.formula-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+
+.btn-primary {
+  height: 32px;
+  padding: 0 14px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  color: #ffffff;
+  background: var(--accent);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn-primary:active {
+  opacity: 0.85;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.btn-icon:hover {
+  color: var(--text);
+  background: var(--surface-2);
+}
+
+/* --------------------------------------------------------------------------
+   Topbar right slot
+   -------------------------------------------------------------------------- */
+
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Theme toggle icon visibility
+   -------------------------------------------------------------------------- */
+
+[data-theme="light"] .theme-icon-light {
+  display: none;
+}
+
+[data-theme="dark"] .theme-icon-dark {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Layout (below topbar)
+   -------------------------------------------------------------------------- */
+
+.layout {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - var(--topbar-height));
+  margin-top: var(--topbar-height);
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Sidebar
+   -------------------------------------------------------------------------- */
+
+.sidebar {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+  transition: width 0.22s ease, min-width 0.22s ease;
+  z-index: 100;
+}
+
+.sidebar.collapsed {
+  width: 0;
+  min-width: 0;
+  border-right-color: transparent;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.molecule-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 0;
+  /* Thin scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.molecule-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.molecule-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.molecule-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Molecule list items
+   -------------------------------------------------------------------------- */
+
+.mol-item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 12px;
+  font-family: var(--font-ui);
+  text-align: left;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background 0.1s;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.mol-item:hover {
+  background: var(--surface-2);
+}
+
+.mol-item.active {
+  background: var(--surface-2);
+  border-left: 2px solid var(--accent);
+  padding-left: 10px;
+}
+
+.mol-name {
+  font-size: 13px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mol-formula {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------------------
+   Canvas area
+   -------------------------------------------------------------------------- */
+
+.canvas-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--canvas-bg);
+}
+
+#canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   Formula display bar
+   -------------------------------------------------------------------------- */
+
+.formula-display {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--status-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 5px 14px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  max-width: calc(100% - 32px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.formula-display:empty {
+  display: none;
+}
+
+.fd-formula {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.fd-sep {
+  margin: 0 8px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.fd-iupac {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-style: italic;
+  font-family: var(--font-ui);
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fd-mw {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.fd-cid {
+  color: var(--accent);
+  font-size: 11px;
+  text-decoration: none;
+  pointer-events: all;
+}
+
+.fd-cid:hover {
+  text-decoration: underline;
+  color: var(--accent-hover);
+}
+
+/* --------------------------------------------------------------------------
+   Status overlays (loading / error)
+   -------------------------------------------------------------------------- */
+
+.status-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--status-bg);
+  color: var(--text-muted);
+  font-size: 13px;
+  z-index: 50;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.error-overlay {
+  color: #ef4444;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  text-align: center;
+  padding: 24px;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   Loading spinner
+   -------------------------------------------------------------------------- */
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* --------------------------------------------------------------------------
+   Atom Inspector panel
+   -------------------------------------------------------------------------- */
+
+.inspector {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  z-index: 300;
+  overflow: hidden;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.inspector.hidden {
+  display: none;
+}
+
+.inspector-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.inspector-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.inspector-content {
+  padding: 14px;
+  overflow-y: auto;
+  max-height: calc(100vh - 140px);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.inspector-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.inspector-content::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Inspector: element hero
+   -------------------------------------------------------------------------- */
+
+.element-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.element-symbol-large {
+  font-family: var(--font-mono);
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  /* Color is set inline via JS */
+  text-shadow: 0 0 20px currentColor;
+  flex-shrink: 0;
+}
+
+.element-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.element-subtitle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Inspector: divider
+   -------------------------------------------------------------------------- */
+
+.inspector-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0 0 12px 0;
+}
+
+/* --------------------------------------------------------------------------
+   Inspector: stats grid
+   -------------------------------------------------------------------------- */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0 0 4px 0;
+}
+
+.stat-item {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 8px 10px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.stat-value {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   Inspector: noble gas badge
+   -------------------------------------------------------------------------- */
+
+.noble-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--surface-2);
+}
+
+/* --------------------------------------------------------------------------
+   Inspector: color row
+   -------------------------------------------------------------------------- */
+
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.color-row label {
+  flex-shrink: 0;
+}
+
+.color-row input[type="color"] {
+  width: 32px;
+  height: 22px;
+  padding: 1px 2px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--surface-2);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.color-symbol-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Inspector: position row
+   -------------------------------------------------------------------------- */
+
+.position-row {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.pos-label {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/* ==========================================================================
+   Responsive: narrow screens
+   ========================================================================== */
+
+@media (max-width: 600px) {
+  .sidebar {
+    width: 0;
+    min-width: 0;
+  }
+
+  .brand-name {
+    display: none;
+  }
+
+  .search-wrap {
+    max-width: none;
+  }
+
+  .inspector {
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .formula-display {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+}
